@@ -1,0 +1,653 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ════════════════════════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — drive ALL colours via theme variables
+   These are placed OUTSIDE @layer, so they beat all Tailwind utilities.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Dark theme (default) ─────────────────────────────────────────────────── */
+:root,
+.dark {
+  --s50: 248 250 252;
+  --s100: 241 245 249;
+  --s200: 226 232 240;
+  --s300: 203 213 225;
+  --s600: 45 63 85;
+  --s700: 37 51 71;
+  --s800: 30 41 59;
+  --s850: 23 32 51;
+  --s900: 15 23 42;
+  --s950: 9 14 26;
+
+  /* Semantic text */
+  --t-primary: 241 245 249;
+  /* slate-100  */
+  --t-secondary: 148 163 184;
+  /* slate-400  */
+  --t-muted: 100 116 139;
+  /* slate-500  */
+  --t-subtle: 71 85 105;
+  /* slate-600  */
+  --t-white: 255 255 255;
+
+  /* Borders */
+  --border: 255 255 255;
+  --border-op: 0.07;
+
+  /* Page & card bg convenience */
+  --page-bg: rgb(var(--s900));
+  --card-bg: rgb(var(--s800));
+  --input-bg: rgb(var(--s850));
+}
+
+/* ── Light theme ──────────────────────────────────────────────────────────── */
+html:not(.dark) {
+  --s600: 148 163 184;
+  --s700: 226 232 240;
+  /* raised panel = slate-200  */
+  --s800: 255 255 255;
+  /* card         = white      */
+  --s850: 248 250 252;
+  /* card inset   = slate-50   */
+  --s900: 241 245 249;
+  /* page bg      = slate-100  */
+  --s950: 226 232 240;
+  /* outermost    = slate-200  */
+
+  /* Semantic text → dark in light mode */
+  --t-primary: 15 23 42;
+  /* slate-900  */
+  --t-secondary: 71 85 105;
+  /* slate-600  */
+  --t-muted: 100 116 139;
+  /* slate-500  */
+  --t-subtle: 148 163 184;
+  /* slate-400  */
+  --t-white: 15 23 42;
+  /* remapped to near-black */
+
+  /* Borders → dark lines */
+  --border: 0 0 0;
+  --border-op: 0.1;
+
+  --page-bg: rgb(var(--s900));
+  --card-bg: rgb(var(--s800));
+  --input-bg: rgb(var(--s850));
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   GLOBAL BASE
+   ════════════════════════════════════════════════════════════════════════════ */
+@layer base {
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--page-bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--page-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(var(--s600) / 0.5);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6366f1;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #fff;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   OVERRIDE TAILWIND UTILITIES — placed outside @layer so they always win.
+   Every surface-* background and the most common text/border classes
+   are remapped to CSS variables, making ALL pages respond to theme toggle.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Background overrides ─────────────────────────────────────────────────── */
+.bg-surface-50 {
+  background-color: rgb(var(--s50));
+}
+
+.bg-surface-100 {
+  background-color: rgb(var(--s100));
+}
+
+.bg-surface-200 {
+  background-color: rgb(var(--s200));
+}
+
+.bg-surface-300 {
+  background-color: rgb(var(--s300));
+}
+
+.bg-surface-600 {
+  background-color: rgb(var(--s600));
+}
+
+.bg-surface-700 {
+  background-color: rgb(var(--s700));
+}
+
+.bg-surface-800 {
+  background-color: rgb(var(--s800));
+}
+
+.bg-surface-850 {
+  background-color: rgb(var(--s850));
+}
+
+.bg-surface-900 {
+  background-color: rgb(var(--s900));
+}
+
+.bg-surface-950 {
+  background-color: rgb(var(--s950));
+}
+
+/* opacity variants */
+.bg-surface-800\/80 {
+  background-color: rgb(var(--s800) / 0.8);
+}
+
+.bg-surface-800\/60 {
+  background-color: rgb(var(--s800) / 0.6);
+}
+
+.bg-surface-900\/60 {
+  background-color: rgb(var(--s900) / 0.6);
+}
+
+.bg-surface-900\/40 {
+  background-color: rgb(var(--s900) / 0.4);
+}
+
+.bg-white\/5 {
+  background-color: rgb(var(--border) / 0.05);
+}
+
+.bg-white\/\[0\.03\] {
+  background-color: rgb(var(--border) / 0.03);
+}
+
+.bg-black\/60 {
+  background-color: rgb(0 0 0 / 0.6);
+}
+
+/* ── Text overrides ───────────────────────────────────────────────────────── */
+/* text-white and text-slate-1xx/2xx/3xx are invisible on white cards.
+   We remap them through CSS variables so every hardcoded usage switches. */
+.text-white {
+  color: rgb(var(--t-white));
+}
+
+.text-slate-100 {
+  color: rgb(var(--t-primary));
+}
+
+.text-slate-200 {
+  color: rgb(var(--t-primary));
+}
+
+.text-slate-300 {
+  color: rgb(var(--t-secondary));
+}
+
+.text-slate-400 {
+  color: rgb(var(--t-secondary));
+}
+
+.text-slate-500 {
+  color: rgb(var(--t-muted));
+}
+
+.text-slate-600 {
+  color: rgb(var(--t-subtle));
+}
+
+/* Keep white text on COLOURED (non-surface) backgrounds */
+[class*="bg-primary"] .text-white,
+[class*="bg-indigo"] .text-white,
+[class*="bg-emerald"] .text-white,
+[class*="bg-red"] .text-white,
+[class*="bg-blue"] .text-white,
+[class*="bg-violet"] .text-white,
+[class*="bg-amber"] .text-white,
+[class*="bg-rose"] .text-white,
+[class*="bg-teal"] .text-white,
+[class*="bg-cyan"] .text-white,
+[class*="bg-pink"] .text-white,
+.btn-primary .text-white,
+.btn-primary {
+  color: #fff !important;
+}
+
+/* Buttons always keep their own text */
+.btn-primary,
+.btn-success:hover,
+.btn-danger:hover {
+  color: #fff !important;
+}
+
+/* ── Border overrides ─────────────────────────────────────────────────────── */
+.border-white\/5 {
+  border-color: rgb(var(--border) / 0.08);
+}
+
+.border-white\/8 {
+  border-color: rgb(var(--border) / 0.10);
+}
+
+.border-white\/10 {
+  border-color: rgb(var(--border) / 0.12);
+}
+
+.border-white\/20 {
+  border-color: rgb(var(--border) / 0.18);
+}
+
+.divide-white\/5>*+* {
+  border-color: rgb(var(--border) / 0.08);
+}
+
+/* ── Hover backgrounds ────────────────────────────────────────────────────── */
+.hover\:bg-white\/5:hover {
+  background-color: rgb(var(--border) / 0.06);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   COMPONENT CLASSES
+   ════════════════════════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── Card ──────────────────────────────────────────────────────────────── */
+  .card {
+    background-color: var(--card-bg);
+    border: 1px solid rgb(var(--border) / var(--border-op));
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 0.08);
+    transition: background-color 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+
+  .dark .card {
+    box-shadow: 0 4px 24px rgb(0 0 0 / 0.3);
+  }
+
+  .card-hover {
+    @apply card transition-all duration-300 hover:-translate-y-0.5;
+  }
+
+  .card-hover:hover {
+    box-shadow: 0 8px 32px rgb(99 102 241 / 0.15);
+    border-color: rgb(99 102 241 / 0.3);
+  }
+
+  /* ── Buttons ───────────────────────────────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-primary-600 hover:bg-primary-500 focus:ring-primary-500 shadow-lg shadow-primary-600/25;
+    color: #fff !important;
+  }
+
+  .btn-secondary {
+    @apply btn focus:ring-slate-400;
+    background-color: rgb(var(--s700));
+    border: 1px solid rgb(var(--border) / 0.12);
+    color: rgb(var(--t-secondary));
+  }
+
+  .btn-secondary:hover {
+    background-color: rgb(var(--s600));
+  }
+
+  .btn-danger {
+    @apply btn bg-red-50 text-red-600 border border-red-200 hover:bg-red-600 focus:ring-red-500;
+  }
+
+  .dark .btn-danger {
+    @apply bg-red-600/10 text-red-400 border-red-500/20;
+  }
+
+  .btn-danger:hover {
+    color: #fff !important;
+  }
+
+  .btn-success {
+    @apply btn bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-600 focus:ring-emerald-500;
+  }
+
+  .dark .btn-success {
+    @apply bg-emerald-600/10 text-emerald-400 border-emerald-500/20;
+  }
+
+  .btn-success:hover {
+    color: #fff !important;
+  }
+
+  .btn-ghost {
+    @apply btn focus:ring-slate-400;
+    color: rgb(var(--t-muted));
+  }
+
+  .btn-ghost:hover {
+    background-color: rgb(var(--border) / 0.06);
+    color: rgb(var(--t-primary));
+  }
+
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs rounded-lg;
+  }
+
+  .btn-lg {
+    @apply px-6 py-3.5 text-base rounded-xl;
+  }
+
+  /* ── Inputs ────────────────────────────────────────────────────────────── */
+  .input {
+    @apply w-full px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/40 disabled:opacity-50 disabled:cursor-not-allowed;
+    background-color: var(--input-bg);
+    border: 1px solid rgb(var(--border) / 0.12);
+    color: rgb(var(--t-primary));
+    transition: border-color 0.2s, background-color 0.25s;
+  }
+
+  .input::placeholder {
+    color: rgb(var(--t-muted));
+    opacity: 0.7;
+  }
+
+  .input:focus {
+    border-color: #6366f1;
+  }
+
+  .input-error {
+    @apply input;
+    border-color: #ef4444;
+  }
+
+  .label {
+    @apply block text-sm font-medium mb-1.5;
+    color: rgb(var(--t-secondary));
+  }
+
+  .form-error {
+    @apply text-red-500 dark:text-red-400 text-xs mt-1 flex items-center gap-1;
+  }
+
+  .select {
+    @apply input appearance-none cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+  }
+
+  /* ── Badges ────────────────────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide;
+  }
+
+  .badge-pending {
+    @apply badge bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-500/15 dark:text-amber-300 dark:border-amber-500/25;
+  }
+
+  .badge-approved {
+    @apply badge bg-emerald-100 text-emerald-800 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/25;
+  }
+
+  .badge-rejected {
+    @apply badge bg-red-100 text-red-800 border border-red-200 dark:bg-red-500/15 dark:text-red-300 dark:border-red-500/25;
+  }
+
+  .badge-cancelled {
+    @apply badge bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-500/15 dark:text-slate-300 dark:border-slate-500/25;
+  }
+
+  .badge-annual {
+    @apply badge bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/25;
+  }
+
+  .badge-sick {
+    @apply badge bg-rose-100 text-rose-800 border border-rose-200 dark:bg-rose-500/15 dark:text-rose-300 dark:border-rose-500/25;
+  }
+
+  .badge-casual {
+    @apply badge bg-violet-100 text-violet-800 border border-violet-200 dark:bg-violet-500/15 dark:text-violet-300 dark:border-violet-500/25;
+  }
+
+  .badge-unpaid {
+    @apply badge bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-500/15 dark:text-gray-300 dark:border-gray-500/25;
+  }
+
+  .badge-travel {
+    @apply badge bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-500/15 dark:text-blue-300 dark:border-blue-500/25;
+  }
+
+  .badge-food {
+    @apply badge bg-orange-100 text-orange-800 border border-orange-200 dark:bg-orange-500/15 dark:text-orange-300 dark:border-orange-500/25;
+  }
+
+  .badge-office-supplies {
+    @apply badge bg-teal-100 text-teal-800 border border-teal-200 dark:bg-teal-500/15 dark:text-teal-300 dark:border-teal-500/25;
+  }
+
+  .badge-internet {
+    @apply badge bg-indigo-100 text-indigo-800 border border-indigo-200 dark:bg-indigo-500/15 dark:text-indigo-300 dark:border-indigo-500/25;
+  }
+
+  .badge-other {
+    @apply badge bg-gray-100 text-gray-700 border border-gray-200 dark:bg-gray-500/15 dark:text-gray-300 dark:border-gray-500/25;
+  }
+
+  /* ── Page Layout ───────────────────────────────────────────────────────── */
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8;
+  }
+
+  .page-header {
+    @apply mb-6 sm:mb-8;
+  }
+
+  .page-title {
+    @apply text-xl sm:text-2xl font-bold;
+    color: rgb(var(--t-primary));
+  }
+
+  .page-subtitle {
+    @apply text-sm mt-1;
+    color: rgb(var(--t-muted));
+  }
+
+  /* ── Stat Cards ────────────────────────────────────────────────────────── */
+  .stat-card {
+    @apply card p-4 sm:p-6 flex items-start gap-4;
+  }
+
+  .stat-icon {
+    @apply w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0;
+  }
+
+  /* ── Table ─────────────────────────────────────────────────────────────── */
+  .table-container {
+    @apply card overflow-hidden;
+  }
+
+  .table-wrapper {
+    @apply overflow-x-auto -mx-0;
+  }
+
+  table {
+    @apply w-full text-sm;
+    min-width: 580px;
+  }
+
+  thead {
+    border-bottom: 1px solid rgb(var(--border) / 0.1);
+  }
+
+  th {
+    @apply px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider whitespace-nowrap;
+    color: rgb(var(--t-muted));
+  }
+
+  td {
+    @apply px-4 py-3.5 whitespace-nowrap;
+    color: rgb(var(--t-secondary));
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgb(var(--border) / 0.07);
+    transition: background-color 0.15s;
+  }
+
+  tbody tr:hover {
+    background-color: rgb(var(--s850));
+  }
+
+  tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Sidebar nav ───────────────────────────────────────────────────────── */
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200;
+    color: rgb(var(--t-muted));
+  }
+
+  .nav-link:hover {
+    background-color: rgb(var(--border) / 0.07);
+    color: rgb(var(--t-primary));
+  }
+
+  .nav-link.active {
+    background-color: rgb(99 102 241 / 0.12);
+    color: #6366f1;
+    border: 1px solid rgb(99 102 241 / 0.22);
+  }
+
+  .dark .nav-link.active {
+    color: #a5b4fc;
+  }
+
+  /* ── Misc ──────────────────────────────────────────────────────────────── */
+  .divider {
+    border-top: 1px solid rgb(var(--border) / 0.08);
+    @apply my-6;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid rgb(var(--border) / 0.15);
+    border-top-color: #6366f1;
+    border-radius: 9999px;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .modal-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in;
+    background: rgb(0 0 0 / 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-box {
+    @apply card w-full max-w-lg p-5 sm:p-6 animate-slide-up;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FULLCALENDAR DARK / LIGHT THEMING
+   ════════════════════════════════════════════════════════════════════════════ */
+.fc {
+  --fc-border-color: rgb(var(--border) / 0.1);
+  --fc-today-bg-color: rgb(99 102 241 / 0.07);
+  --fc-neutral-bg-color: transparent;
+  --fc-page-bg-color: transparent;
+  --fc-small-font-size: 0.8em;
+  --fc-list-event-hover-bg-color: rgb(var(--s850));
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: rgb(var(--t-muted));
+  @apply text-xs font-semibold uppercase tracking-wider no-underline;
+}
+
+.fc .fc-daygrid-day-number {
+  color: rgb(var(--t-muted));
+  @apply text-sm no-underline;
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  color: #6366f1;
+  @apply font-bold;
+}
+
+.fc .fc-button {
+  background-color: rgb(var(--s700)) !important;
+  border-color: rgb(var(--border) / 0.12) !important;
+  color: rgb(var(--t-secondary)) !important;
+  @apply text-sm rounded-lg;
+}
+
+.fc .fc-button:hover {
+  background-color: rgb(var(--s600)) !important;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  @apply bg-primary-600 border-primary-600;
+  color: #fff !important;
+}
+
+.fc .fc-event {
+  @apply rounded-lg text-xs font-medium border-0 cursor-pointer;
+}
+
+.fc .fc-list-event-title {
+  color: rgb(var(--t-secondary));
+}
+
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+  color: rgb(var(--t-muted));
+}
+
+.fc-theme-standard .fc-list {
+  border: 1px solid rgb(var(--border) / 0.1);
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: rgb(var(--border) / 0.08);
+}
