@@ -52,7 +52,7 @@ const LoginPage = () => {
                     <p className="text-primary-200/70 text-lg leading-relaxed max-w-md">
                         Streamline your entire HR leave workflow — from applications to approvals, all in one place.
                     </p>
-                    <div className="mt-12 grid grid-cols-2 gap-4" style={color= "black"}>
+                    <div className="mt-12 grid grid-cols-2 gap-4">
                         {[
                             { label: 'Role-Based Access', icon: '🔐' },
                             { label: 'Real-time Calendar', icon: '📅' },
