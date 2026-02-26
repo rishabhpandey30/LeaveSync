@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useReimbursement } from '../../context/ReimbursementContext';
 import { StatusBadge, ReimbursementTypeBadge } from '../../components/common/Badge';
-import { formatDate } from '../../utils/helpers';
+import { formatDate, getFileUrl } from '../../utils/helpers';
 import { HiOutlineDocumentText } from 'react-icons/hi';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 
@@ -61,7 +61,7 @@ const MyReimbursements = () => {
                                         </td>
                                         <td className="py-4 px-6">
                                             <a
-                                                href={r.receiptUrl}
+                                                href={getFileUrl(r.receiptUrl)}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 className="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"

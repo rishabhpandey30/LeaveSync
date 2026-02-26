@@ -20,7 +20,10 @@ const app = express();
 
 // ── Global Middleware ─────────────────────────────────────────────────────────
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: function (origin, callback) {
+        // Automatically allow any frontend domain to connect (e.g. Vercel)
+        callback(null, true);
+    },
     credentials: true,
 }));
 

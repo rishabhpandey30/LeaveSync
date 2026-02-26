@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useReimbursement } from '../../context/ReimbursementContext';
 import { StatusBadge, ReimbursementTypeBadge } from '../../components/common/Badge';
-import { formatDate } from '../../utils/helpers';
+import { formatDate, getFileUrl } from '../../utils/helpers';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
 import Modal from '../../components/common/Modal';
@@ -96,7 +96,7 @@ const AllReimbursements = () => {
                                         <p className="text-sm text-slate-600 dark:text-slate-300 truncate">
                                             {r.description}
                                         </p>
-                                        <a href={r.receiptUrl} target="_blank" rel="noreferrer" className="text-xs text-primary-500 hover:underline mt-1 inline-block">
+                                        <a href={getFileUrl(r.receiptUrl)} target="_blank" rel="noreferrer" className="text-xs text-primary-500 hover:underline mt-1 inline-block">
                                             View Receipt
                                         </a>
                                     </td>

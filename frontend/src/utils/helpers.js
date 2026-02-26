@@ -105,3 +105,11 @@ export const avatarColor = (name = '') => {
     const code = [...name].reduce((acc, c) => acc + c.charCodeAt(0), 0);
     return AVATAR_COLORS[code % AVATAR_COLORS.length];
 };
+
+// ── File URL helper for production (Vercel resolving to Render) ───────────────
+export const getFileUrl = (path) => {
+    if (!path) return '';
+    if (path.startsWith('http')) return path;
+    const baseURL = import.meta.env.VITE_API_URL || '';
+    return `${baseURL.replace('/api', '')}${path}`;
+};
