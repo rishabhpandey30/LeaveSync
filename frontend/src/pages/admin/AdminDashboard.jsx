@@ -65,11 +65,17 @@ const AdminDashboard = () => {
     if (loading) return <PageLoader text="Loading admin dashboard..." />;
 
     // ── Chart data ────────────────────────────────────────────────────
+    const getMonthName = (monthNumber) => {
+        const date = new Date();
+        date.setMonth(monthNumber - 1);
+        return date.toLocaleString('default', { month: 'short' });
+    };
+
     const monthlyData = {
-        labels: (stats?.monthlyTrend || []).map(m => m.month),
+        labels: (stats?.monthlyTrend || []).map(m => m._id ? getMonthName(m._id.month) : ''),
         datasets: [{
             label: 'Leave Requests',
-            data: (stats?.monthlyTrend || []).map(m => m.count),
+            data: (stats?.monthlyTrend || []).map(m => m.total || 0),
             backgroundColor: 'rgba(99, 102, 241, 0.6)',
             borderColor: 'rgba(99, 102, 241, 1)',
             borderWidth: 1,
@@ -79,19 +85,20 @@ const AdminDashboard = () => {
 
     const typeColors = ['rgba(59,130,246,0.7)', 'rgba(244,63,94,0.7)', 'rgba(139,92,246,0.7)', 'rgba(107,114,128,0.7)'];
     const statusData = {
-        labels: ['Pending', 'Approved', 'Rejected', 'Cancelled'],
+        labels: ['Pending', 'Approved', 'Rejected'],
         datasets: [{
             data: [
-                stats?.leaveStats?.pending || 0,
-                stats?.leaveStats?.approved || 0,
-                stats?.leaveStats?.rejected || 0,
-                stats?.leaveStats?.cancelled || 0,
+                stats?.leaves?.pending || 0,
+                stats?.leaves?.approved || 0,
+                stats?.leaves?.rejected || 0,
             ],
-            backgroundColor: ['rgba(245,158,11,0.7)', 'rgba(16,185,129,0.7)', 'rgba(239,68,68,0.7)', 'rgba(100,116,139,0.7)'],
-            borderColor: ['#f59e0b', '#10b981', '#ef4444', '#64748b'],
+            backgroundColor: ['rgba(245,158,11,0.7)', 'rgba(16,185,129,0.7)', 'rgba(239,68,68,0.7)'],
+            borderColor: ['#f59e0b', '#10b981', '#ef4444'],
             borderWidth: 1,
         }],
     };
+
+    const totalDaysOff = (stats?.leavesByType || []).reduce((acc, curr) => acc + (curr.totalDays || 0), 0);
 
     return (
         <div className="page-container animate-fade-in">
@@ -109,10 +116,10 @@ const AdminDashboard = () => {
 
             {/* ── Top Stat Cards ──────────────────────────────────── */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <StatCard icon={<HiOutlineUsers className="w-6 h-6" />} label="Total Users" value={stats?.userStats?.total || 0} color="indigo" />
-                <StatCard icon={<HiOutlineClipboardList className="w-6 h-6" />} label="Total Leaves" value={stats?.leaveStats?.total || 0} color="blue" />
-                <StatCard icon={<HiOutlineClock className="w-6 h-6" />} label="Pending Approval" value={stats?.leaveStats?.pending || 0} color="amber" />
-                <StatCard icon={<HiOutlineCheckCircle className="w-6 h-6" />} label="Total Days Off" value={stats?.leaveStats?.totalDays || 0} color="emerald" />
+                <StatCard icon={<HiOutlineUsers className="w-6 h-6" />} label="Total Users" value={stats?.users?.total || 0} color="indigo" />
+                <StatCard icon={<HiOutlineClipboardList className="w-6 h-6" />} label="Total Leaves" value={stats?.leaves?.total || 0} color="blue" />
+                <StatCard icon={<HiOutlineClock className="w-6 h-6" />} label="Pending Approval" value={stats?.leaves?.pending || 0} color="amber" />
+                <StatCard icon={<HiOutlineCheckCircle className="w-6 h-6" />} label="Total Days Off" value={totalDaysOff} color="emerald" />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
@@ -180,10 +187,10 @@ const AdminDashboard = () => {
                             <h3 className="text-white font-semibold text-sm">User Breakdown</h3>
                         </div>
                         {[
-                            { label: 'Admins', val: stats?.userStats?.admins || 0, color: 'text-red-400' },
-                            { label: 'Managers', val: stats?.userStats?.managers || 0, color: 'text-amber-400' },
-                            { label: 'Employees', val: stats?.userStats?.employees || 0, color: 'text-blue-400' },
-                            { label: 'Active', val: stats?.userStats?.active || 0, color: 'text-emerald-400' },
+                            { label: 'Admins', val: (stats?.users?.total || 0) - (stats?.users?.employees || 0) - (stats?.users?.managers || 0) || 0, color: 'text-red-400' },
+                            { label: 'Managers', val: stats?.users?.managers || 0, color: 'text-amber-400' },
+                            { label: 'Employees', val: stats?.users?.employees || 0, color: 'text-blue-400' },
+                            { label: 'Active', val: stats?.users?.active || 0, color: 'text-emerald-400' },
                         ].map(({ label, val, color }) => (
                             <div key={label} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0 text-sm">
                                 <span className="text-slate-400">{label}</span>
@@ -193,16 +200,16 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Dept breakdown */}
-                    {stats?.deptBreakdown?.length > 0 && (
+                    {stats?.deptStats?.length > 0 && (
                         <div className="card p-5">
                             <div className="flex items-center gap-2 mb-3">
                                 <HiOutlineOfficeBuilding className="w-4 h-4 text-primary-400" />
                                 <h3 className="text-white font-semibold text-sm">By Department</h3>
                             </div>
-                            {stats.deptBreakdown.slice(0, 5).map(({ _id, count }) => (
+                            {stats.deptStats.slice(0, 5).map(({ _id, total }) => (
                                 <div key={_id} className="flex justify-between items-center py-1.5 text-sm">
                                     <span className="text-slate-400 truncate">{_id || 'N/A'}</span>
-                                    <span className="text-white font-semibold ml-2">{count}</span>
+                                    <span className="text-white font-semibold ml-2">{total}</span>
                                 </div>
                             ))}
                         </div>

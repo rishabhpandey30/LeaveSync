@@ -49,7 +49,7 @@ const LoginPage = () => {
                     <h2 className="text-white text-4xl font-bold leading-tight mb-4">
                         Manage leaves<br />smarter & faster
                     </h2>
-                    <p className="text-primary-200/70 text-lg leading-relaxed max-w-md">
+                    <p className="text-black text-lg leading-relaxed max-w-md">
                         Streamline your entire HR leave workflow — from applications to approvals, all in one place.
                     </p>
                     <div className="mt-12 grid grid-cols-2 gap-4">
@@ -59,7 +59,7 @@ const LoginPage = () => {
                             { label: 'Smart Analytics', icon: '📊' },
                             { label: 'Leave Tracking', icon: '✅' },
                         ].map((f) => (
-                            <div key={f.label} className="flex items-center gap-2 text-primary-200/80 text-sm">
+                            <div key={f.label} className="flex items-center gap-2 text-black text-sm">
                                 <span>{f.icon}</span>
                                 <span>{f.label}</span>
                             </div>
