@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // ── Base Axios instance ───────────────────────────────────────────────────────
 const api = axios.create({
-    baseURL: '/api',
+    baseURL: '/api' || backendURL,
     headers: { 'Content-Type': 'application/json' },
     timeout: 15000,
 });
